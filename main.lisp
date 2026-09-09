@@ -2,14 +2,19 @@
 
 (defun main ()
   "CLI entry-point"
-  (let ((args (uiop:command-line-arguments)))
-    (cond
-      ((equal args '("setup"))
-       (setup (ensure-config)))
-      ((equal args '("run"))
-       (run (ensure-config)))
-      (t
-       (error "Unknown arguments '~A', options are 'setup', 'run'" args)))))
+  (handler-case
+      (let ((args (uiop:command-line-arguments)))
+        (cond
+          ((equal args '("setup"))
+           (setup (ensure-config)))
+          ((equal args '("run"))
+           (run (ensure-config)))
+          (t
+           (error "Unknown arguments '~A', options are 'setup', 'run'" args)))
+        (uiop:quit 0))
+    (error (e)
+      (format *error-output* "ERROR: ~A~%" e)
+      (uiop:quit 1))))
 
 (defun setup (config)
   (ensure-dependencies)

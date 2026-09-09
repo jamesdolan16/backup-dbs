@@ -1,2 +1,3 @@
 (defpackage :backup-dbs
-  (:use :cl))
+  (:use :cl)
+  (:export :main))
