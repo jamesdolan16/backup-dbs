@@ -4,7 +4,7 @@
   (format t "-> Dumping Users and Grants")
   (let* ((user (getf config :mysql-user))
          (login-path (getf config :mysql-login-path))
-         (users-and-grants-path (format nil "~A/usersandgrants.sql" this-backup-path)))
+         (users-and-grants-path (format nil "~Ausersandgrants.sql" this-backup-path)))
 
     (with-open-file (stream users-and-grants-path
                             :direction :output
@@ -17,15 +17,12 @@
                      (format nil "--exclude-users='root,mysql.infoschema,mysql.session,mysql.sys,~A'" user)
                      "--skip-watch-progress"
                      (format nil "--login-path=~A" login-path))
-        (write out :stream stream)))))
+        (write-string out stream)))))
 
-(defun backup-database (config db)
+(defun backup-database (config this-backup-path db)
   (format t "  -> Backing up ~A..." db)
-  (let* ((date (current-date-string))
-         (backup-dir-path (getf config :backup-dir))
-         (this-backup-path (format nil "~A/~A" backup-dir-path date))
-         (login-path (getf config :mysql-login-path))
-         (output-path (format nil "~A/~A.sql.gz" this-backup-path db))
+  (let* ((login-path (getf config :mysql-login-path))
+         (output-path (format nil "~A~A.sql.gz" this-backup-path db))
          (command (format nil "mysqldump \
 --login-path=~A \
 --single-transaction \

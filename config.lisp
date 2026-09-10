@@ -1,6 +1,6 @@
 (in-package :backup-dbs)
 
-(defparameter *config-path* #p"~/.backup-dbs/config.lisp")
+(defparameter *config-path* #p"/etc/backups-dbs/config.lisp")
 
 (defun default-config ()
   '(:backup-dir "/var/backups/mysql"

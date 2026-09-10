@@ -8,9 +8,9 @@
   (format t "-> Dumping DBs")
   (backup-databases config (list-databases config)))
 
-(defun backup-databases (config databases)
+(defun backup-databases (config this-backup-path databases)
   (dolist (db databases)
-    (backup-database config db)))
+    (backup-database config this-backup-path db)))
 
 (defun current-date-string ()
   (multiple-value-bind (second minute hour day month year)
